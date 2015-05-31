@@ -9,6 +9,13 @@ npm install gulp-jsmodule
 ```javascript
 var jsmodule = require("gulp-jsmodule");
 
-// more coming
+/**
+ * Build JS
+ */
+gulp.task('js', function () {
+  gulp.src(['./src/**/*.js'])
+    .pipe(jsmodule('out.js'))
+    .pipe(gulp.dest('./dist/'));
+});
 ```
 
