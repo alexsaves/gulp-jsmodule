@@ -2,10 +2,8 @@
  * JS Module Processor
  * Created by alexei on 2/5/2014.
  */
-var os = require('os');
-var path = require('path');
-var ejs = require('ejs');
-var minify = require('html-minifier').minify;
+var ejs = require('ejs'),
+  minify = require('html-minifier').minify;
 
 /**
  * JSModule Compiler Class
