@@ -1,0 +1,21 @@
+{
+  "name": "gulp-jsmodule",
+  "version": "1.0.0",
+  "description": "Gulp plugin for reconciling AMD dependency trees in JavaScript projects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "AMD",
+    "gulp",
+    "jsmodule"
+  ],
+  "author": "Alexei White <alexei.white@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^2.3.1",
+    "html-minifier": "^0.7.2",
+    "through": "^2.3.7"
+  }
+}
