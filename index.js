@@ -1,7 +1,28 @@
 var through = require('through'),
   jsmodule = require('./jsmodule'),
   path = require('path'),
-  fs = require('fs');
+  fs = require('fs'),
+  gutil = require('gulp-util'),
+  PluginError = gutil.PluginError,
+  File = gutil.File,
+  colors = require('colors'),
+  strftime = require('strftime');
+
+/**
+ * Log an error
+ * @param eventDetails
+ */
+var logError = function (eventDetails) {
+  console.log(("[" + strftime('%B %d, %y %H:%M:%S') + "] ").magenta + "Error: ".red + eventDetails.red);
+};
+
+/**
+ * Log an event
+ * @param eventDetails
+ */
+var logEvent = function (eventDetails) {
+  console.log(("[" + strftime('%B %d, %y %H:%M:%S') + "] ").magenta + eventDetails);
+};
 
 /**
  * Extend an object
@@ -176,7 +197,7 @@ var jsmoduleconcat = function (fileName, specialConfig) {
     this.emit('data', joinedFile);
     this.emit('end');
 
-    lv("Reconciled " + jsm.fileList.length + " files for " + fileName + " (" + formatKB(joinedContents.length) + ").");
+    logEvent("Reconciled " + jsm.fileList.length + " files for " + fileName + " (" + formatKB(joinedContents.length) + ").");
   }
 
   return through(bufferContents, endStream);
