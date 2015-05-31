@@ -1,6 +1,7 @@
 var through = require('through'),
   jsmodule = require('./jsmodule'),
-  path = require('path');
+  path = require('path'),
+  fs = require('fs');
 
 /**
  * Extend an object
