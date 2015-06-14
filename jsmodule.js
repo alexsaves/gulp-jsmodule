@@ -167,7 +167,7 @@ JSModuleCompiler.prototype._parseFile = function (fl, config) {
     fobj.contents = fobj.contents.substr(0, footerPos);
   }
 
-  if (config.jsmodulestripdebug) {
+  if (config.stripdebug) {
     fobj.header = this._stripPragma(fobj.header);
     fobj.contents = this._stripPragma(fobj.contents);
   }

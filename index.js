@@ -138,8 +138,8 @@ var jsmoduleconcat = function (fileName, specialConfig) {
 
   // Get the configuration
   var config = extend({
-    jsmodulestripdebug: false
-  }, {});
+    stripdebug: false
+  }, specialConfig || {});
 
   // Format numbers as kilobytes
   function formatKB(kb) {
