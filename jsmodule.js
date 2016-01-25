@@ -257,7 +257,7 @@ JSModuleCompiler.prototype._applyRequires = function (fl) {
   var i,
     j,
     r,
-    fl,
+    flc = fl,
     req,
     requiredfiles = [],
     flt;
@@ -272,7 +272,11 @@ JSModuleCompiler.prototype._applyRequires = function (fl) {
   for (r = 0; r < requiredfiles.length; r++) {
     requiredfiles[r].isRequiredBy += fl.isRequiredBy;
     // Cascade the requires
-    this._applyRequires(requiredfiles[r]);
+    try {
+      this._applyRequires(requiredfiles[r]);
+    } catch(e) {
+      this._signalError("Possible recursive error: " + flc.path);
+    }
   }
 
 };
