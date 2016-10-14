@@ -189,7 +189,6 @@ JSModuleCompiler.prototype._parseFile = function (fl, config) {
  * @param filestr
  */
 JSModuleCompiler.prototype.integrateReplacementFromString = function (filestr, path) {
-
   // Grab the header
   var headerPos = this._regexIndexOf(filestr, /\([\w]*function[^\(]*\([a-zA-Z0-9\., _]*\)[^{]*{/g, 0);
   var header = filestr.substr(0, headerPos - 1);
@@ -274,7 +273,7 @@ JSModuleCompiler.prototype._applyRequires = function (fl) {
     // Cascade the requires
     try {
       this._applyRequires(requiredfiles[r]);
-    } catch(e) {
+    } catch (e) {
       this._signalError("Possible recursive error: " + flc.path);
     }
   }
@@ -330,7 +329,7 @@ JSModuleCompiler.prototype._reconcile = function () {
  * Get the fully resolved compiled contents of the folder
  */
 JSModuleCompiler.prototype.getCompiledContents = function (config) {
-
+console.log(config);
   this._reconcile();
 
   var finalstr = [],

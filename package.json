@@ -1,6 +1,6 @@
 {
   "name": "gulp-jsmodule",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "Gulp plugin for reconciling AMD dependency trees in JavaScript projects.",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "gulp-util": "^3.0.5",
     "html-minifier": "^0.7.2",
     "strftime": "^0.9.2",
-    "through": "^2.3.7"
+    "through": "^2.3.7",
+    "md5": "^2.2.1"
   }
 }

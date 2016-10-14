@@ -6,7 +6,10 @@ var through = require('through'),
   PluginError = gutil.PluginError,
   File = gutil.File,
   colors = require('colors'),
-  strftime = require('strftime');
+  strftime = require('strftime'),
+  md5 = require('md5');
+
+var compiledFiles = {};
 
 /**
  * Log an error
@@ -128,6 +131,7 @@ var extend = function () {
  * @returns {*}
  */
 var jsmoduleconcat = function (fileName, specialConfig) {
+
   if (!fileName) throw new PluginError('jsmodule', 'Missing fileName option for jsmodule');
 
   var jsm = new jsmodule(),
@@ -176,28 +180,40 @@ var jsmoduleconcat = function (fileName, specialConfig) {
    * Streaming is over
    */
   function endStream() {
+    var joinedPath = path.join(firstFileBase, fileName),
+      pathmd5 = md5(joinedPath);
 
-    if (specialConfig && specialConfig.replace && specialConfig.replace.length > 0) {
-      for (var i = 0; i < specialConfig.replace.length; i++) {
-        var fl = fs.readFileSync(specialConfig.replace[i], 'utf8');
-        jsm.integrateReplacementFromString(fl, specialConfig.replace[i]);
+    if (compiledFiles[pathmd5]) {
+      process.nextTick(function() {
+        var joinedFile = compiledFiles[pathmd5];
+        this.emit('data', joinedFile);
+        this.emit('end');
+        logEvent("Reconciled " + jsm.fileList.length + " files for " + fileName + " (from cache).");
+      }.bind(this));
+    } else {
+      if (specialConfig && specialConfig.replace && specialConfig.replace.length > 0) {
+        for (var i = 0; i < specialConfig.replace.length; i++) {
+          var fl = fs.readFileSync(specialConfig.replace[i], 'utf8');
+          jsm.integrateReplacementFromString(fl, specialConfig.replace[i]);
+        }
       }
+
+      var joinedContents = jsm.getCompiledContents(config);
+
+
+      var joinedFile = new File({
+        cwd: firstFileCwd,
+        base: firstFileBase,
+        path: joinedPath,
+        contents: new Buffer(joinedContents)
+      });
+
+      compiledFiles[pathmd5] = joinedFile;
+
+      this.emit('data', joinedFile);
+      this.emit('end');
+      logEvent("Reconciled " + jsm.fileList.length + " files for " + fileName + " (" + formatKB(joinedContents.length) + ").");
     }
-
-    var joinedContents = jsm.getCompiledContents(config);
-    var joinedPath = path.join(firstFileBase, fileName);
-
-    var joinedFile = new File({
-      cwd: firstFileCwd,
-      base: firstFileBase,
-      path: joinedPath,
-      contents: new Buffer(joinedContents)
-    });
-
-    this.emit('data', joinedFile);
-    this.emit('end');
-
-    logEvent("Reconciled " + jsm.fileList.length + " files for " + fileName + " (" + formatKB(joinedContents.length) + ").");
   }
 
   return through(bufferContents, endStream);
