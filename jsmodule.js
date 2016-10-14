@@ -329,7 +329,6 @@ JSModuleCompiler.prototype._reconcile = function () {
  * Get the fully resolved compiled contents of the folder
  */
 JSModuleCompiler.prototype.getCompiledContents = function (config) {
-console.log(config);
   this._reconcile();
 
   var finalstr = [],

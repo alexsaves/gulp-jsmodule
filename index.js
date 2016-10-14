@@ -188,7 +188,7 @@ var jsmoduleconcat = function (fileName, specialConfig) {
         var joinedFile = compiledFiles[pathmd5];
         this.emit('data', joinedFile);
         this.emit('end');
-        logEvent("Reconciled " + jsm.fileList.length + " files for " + fileName + " (from cache).");
+        logEvent("Reconciled " + jsm.fileList.length.toString().yellow + " files for " + fileName.magenta + " (from cache).");
       }.bind(this));
     } else {
       if (specialConfig && specialConfig.replace && specialConfig.replace.length > 0) {
@@ -212,7 +212,7 @@ var jsmoduleconcat = function (fileName, specialConfig) {
 
       this.emit('data', joinedFile);
       this.emit('end');
-      logEvent("Reconciled " + jsm.fileList.length + " files for " + fileName + " (" + formatKB(joinedContents.length) + ").");
+      logEvent("Reconciled " + jsm.fileList.length.toString().yellow + " files for " + fileName.magenta + " (" + formatKB(joinedContents.length) + ").");
     }
   }
 
