@@ -186,7 +186,7 @@ var jsmoduleconcat = function (fileName, specialConfig) {
     if (compiledFiles[pathmd5]) {
       process.nextTick(function() {
         var joinedFile = compiledFiles[pathmd5];
-        this.emit('data', joinedFile);
+        this.emit('data', new File(joinedFile));
         this.emit('end');
         logEvent("Reconciled " + jsm.fileList.length.toString().yellow + " files for " + fileName.magenta + " (from cache).");
       }.bind(this));
@@ -199,14 +199,15 @@ var jsmoduleconcat = function (fileName, specialConfig) {
       }
 
       var joinedContents = jsm.getCompiledContents(config),
-        joinedFile = new File({
-        cwd: firstFileCwd,
-        base: firstFileBase,
-        path: joinedPath,
-        contents: new Buffer(joinedContents)
-      });
+        filebits = {
+          cwd: firstFileCwd,
+          base: firstFileBase,
+          path: joinedPath,
+          contents: new Buffer(joinedContents)
+        },
+        joinedFile = new File(filebits);
 
-      compiledFiles[pathmd5] = joinedFile;
+      compiledFiles[pathmd5] = filebits;
 
       this.emit('data', joinedFile);
       this.emit('end');
