@@ -181,7 +181,7 @@ var jsmoduleconcat = function (fileName, specialConfig) {
    */
   function endStream() {
     var joinedPath = path.join(firstFileBase, fileName),
-      pathmd5 = md5(joinedPath);
+      pathmd5 = md5(joinedPath + JSON.stringify(config || {}));
 
     if (compiledFiles[pathmd5]) {
       process.nextTick(function() {
@@ -198,10 +198,8 @@ var jsmoduleconcat = function (fileName, specialConfig) {
         }
       }
 
-      var joinedContents = jsm.getCompiledContents(config);
-
-
-      var joinedFile = new File({
+      var joinedContents = jsm.getCompiledContents(config),
+        joinedFile = new File({
         cwd: firstFileCwd,
         base: firstFileBase,
         path: joinedPath,
