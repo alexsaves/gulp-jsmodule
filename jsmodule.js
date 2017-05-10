@@ -87,29 +87,29 @@ JSModuleCompiler.prototype._parseDependences = function (fl) {
     provides = [],
     overrides = [],
     pos = 0;
-  var match = (/^(?!\/\/)[0-9a-zA-Z_\s]+\.require\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
+  var match = (/[0-9a-zA-Z_]+\.require\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
   while (match != null) {
     requires.push(match[1]);
     head = head.substr(match.index + match[0].length);
-    match = (/^(?!\/\/)[0-9a-zA-Z_\s]+\.require\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
+    match = (/[0-9a-zA-Z_]+\.require\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
   }
   fl.requires = requires;
 
   head = fl.header;
-  match = (/^(?!\/\/)[0-9a-zA-Z_\s]+\.provide\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
+  match = (/[0-9a-zA-Z_]+\.provide\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
   while (match != null) {
     provides.push(match[1]);
     head = head.substr(match.index + match[0].length);
-    match = (/^(?!\/\/)[0-9a-zA-Z_\s]+\.provide\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
+    match = (/[0-9a-zA-Z_]+\.provide\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
   }
   fl.provides = provides;
 
   head = fl.header;
-  match = (/^(?!\/\/)[0-9a-zA-Z_\s]+\.override\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
+  match = (/[0-9a-zA-Z_]+\.override\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
   while (match != null) {
     overrides.push(match[1]);
     head = head.substr(match.index + match[0].length);
-    match = (/^(?!\/\/)[0-9a-zA-Z_\s]+\.override\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
+    match = (/[0-9a-zA-Z_]+\.override\([\w]*["']([a-z0-9A-Z_\.]*)["'][\w]*\)[\w]*;/gi).exec(head);
   }
   fl.overrides = overrides;
 };
@@ -163,7 +163,7 @@ JSModuleCompiler.prototype._parseFile = function (fl, config) {
     fobj.header = fobj.contents.substr(0, headerPos - 1);
     fobj.contents = fobj.contents.substr(headerPos);
     fobj.contents = fobj.contents.substr(fobj.contents.indexOf('{') + 1);
-    footerPos = this._regexLastIndexOf(fobj.contents, /}\)\s*\([a-zA-Z0-9_\.$]*\);/g);
+    footerPos = this._regexLastIndexOf(fobj.contents, /}\)\([a-zA-Z0-9_\.$]*\);/g);
     fobj.contents = fobj.contents.substr(0, footerPos);
   }
 
@@ -194,7 +194,7 @@ JSModuleCompiler.prototype.integrateReplacementFromString = function (filestr, p
   var header = filestr.substr(0, headerPos - 1);
   var contents = filestr.substr(headerPos);
   contents = contents.substr(contents.indexOf('{') + 1);
-  var footerPos = this._regexLastIndexOf(contents, /}\)\s*\([a-zA-Z0-9_\.$]*\);/g);
+  var footerPos = this._regexLastIndexOf(contents, /}\)\([a-zA-Z0-9_\.$]*\);/g);
   contents = contents.substr(0, footerPos);
 
   if (this.lastConfig && this.lastConfig.jsmodulestripdebug) {
